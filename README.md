@@ -114,3 +114,74 @@ Class functions are not bound by default.
 ```
 <button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>
 ```
+
+## Conditional Rendering
+
+```
+function Greeting(props) {
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn) {
+  	return <UserGreeting />;
+  }
+  return <GuestGreeting />;
+}
+```
+
+### Inline If with Logical && Operator
+
+```
+render() {
+  const count = 0;
+  return (
+    <div>{ count && <h1>Messages: {count}</h1>}</div>
+  );
+}
+```
+
+### Inline If-Else with Conditional Operator
+
+```
+render() {
+  const isLoggedIn = this.state.isLoggedIn;
+  return (
+    <div>The user is <b>{isLoggedIn ? 'currently' : 'not'}</b> logged in.</div>
+  );
+}
+```
+
+### Preventing Component from Rendering
+
+Return `null` in `render()` instead of an element/component.  
+
+### Keys
+
+Give keys to the elements inside the array.  
+They help React identify elements.  
+Don't use indexes for keys. Use logical identifiers instead.  
+
+### Extracting Components with Keys
+
+```
+function ListItem(props) {
+  return <li>{props.value}</li>;
+}
+function NumberList(props) {
+  const numbers = props.numbers;
+  const listItems = numbers.map((number) =>
+    <ListItem key={number.toString()} value={number} />);
+  return <ul>{listItems}</ul>;
+}
+```
+
+### Keys Must Only Be Unique Among Siblings
+
+Keys needn't be globally unique.  
+
+### Embedding map() in JSX
+
+```
+function NumberList(props) {
+  const numbers = props.numbers;
+  return <ul>{numbers.map((number) => <ListItem key={number.toString()} value={number} />)}</ul>;
+}
+```
