@@ -16,11 +16,13 @@ Imagine you already have:
 * a mock from your designer
 
 You just need to determine:
-* the `state`
-* the `props`
-* the components
+* components
+* `props`: passed between components
+* `state`: managed within the component; variable within a function
 
 ### JSX
+
+Merging of HTML and JavaScript.  
 
 ```
 const element = (
@@ -32,7 +34,7 @@ const element = (
 return element;
 ```
 
-### Rendering elements
+### Rendering Elements
 
 ```html
 <div id="root"></div>
@@ -43,29 +45,15 @@ const element = <h1>Hello, world</h1>;
 ReactDOM.render(element, document.getElementById('root'));
 ```
 
-You will see: "Hello, world".  
-
-### Function and Class Components
-
-`Function Component` only has a `render()` function.  
-
-```
-class Welcome extends React.Component {
-  render() {
-    return <h1>Hello, {this.props.name}</h1>;
-  }
-}
-```
-
-### Adding Lifecycle Methods to a Class
+### Lifecycle Methods
 
 Goal:
-* `mount` a timer whenever the Clock is rendered for the first time
-* `unmount` that timer whenever the DOM produced by the Clock is removed
+* `mount` a timer when the `Clock` is rendered for the first time
+* `unmount` a timer whenever the DOM produced by the `Clock` is removed
 
 Lifecycle methods/functions:
 * `componentDidMount()`: runs after the component output has been rendered to the DOM
-* `componentWillUnmount()`: runs when the components leaves the DOM
+* `componentWillUnmount()`: runs when the components is removed from the DOM
 
 ```
 componentDidMount() {
@@ -79,7 +67,7 @@ componentWillUnmount() {
 `setInterval()` calls a function every time the timer elapses.  
 `clearInterval()` removes the timer.  
 
-### Using State Correctly
+### State
 
 Always call `setState()`, never modify the `state` directly!
 
@@ -91,97 +79,90 @@ this.setState((state, props) => ({counter: state.counter + props.increment})); /
 this.setState({counter: this.state.counter + this.props.increment}); /* Updates incorrectly! */
 ```
 
-## Handling Events
-
-Similar to handling events on DOM elements.  
-
-```
-function Form() {
-  function handleSubmit(e) { /* e is a synthetic event */
-    e.preventDefault();
-    console.log('You clicked submit.');
-  }
-
-  return (<form onSubmit={handleSubmit}><button type="submit">Submit</button></form>);
-}
-```
-
-Class functions are not bound by default.  
-`bind()` any function that is called without `()` after it, such as `onClick={this.handleClick}`.  
-
-### Passing Arguments to Event Handlers
-
-```
-<button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>
-```
-
-## Conditional Rendering
-
-```
-function Greeting(props) {
-  const isLoggedIn = props.isLoggedIn;
-  if (isLoggedIn) {
-  	return <UserGreeting />;
-  }
-  return <GuestGreeting />;
-}
-```
-
-### Inline If with Logical && Operator
-
-```
-render() {
-  const count = 0;
-  return (
-    <div>{ count && <h1>Messages: {count}</h1>}</div>
-  );
-}
-```
-
-### Inline If-Else with Conditional Operator
-
-```
-render() {
-  const isLoggedIn = this.state.isLoggedIn;
-  return (
-    <div>The user is <b>{isLoggedIn ? 'currently' : 'not'}</b> logged in.</div>
-  );
-}
-```
-
 ### Preventing Component from Rendering
 
 Return `null` in `render()` instead of an element/component.  
 
 ### Keys
 
-Give keys to the elements inside the array.  
-They help React identify elements.  
-Don't use indexes for keys. Use logical identifiers instead.  
+Give a unique key to each element inside an array.  
+Don't use index for a key. Use logical identifiers instead.  
+Keys need to be unique only among siblings.  
 
-### Extracting Components with Keys
+### Controlled Components
+
+`form`, `input`, `textarea` and `select` are special because they maintain their own state, seperate from React `state`.  
+These two states need to be combined.  
 
 ```
-function ListItem(props) {
-  return <li>{props.value}</li>;
+class NameForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+    this.handleChange = this.handleChange.bind(this); /* must be bound to be used */
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) { /* event is a synthetic event */
+    this.setState({value: event.target.value});
+  }
+  handleSubmit(arg, event) { /* event is a synthetic event */
+    alert('A name was submitted: ' + this.state.value + arg);
+    event.preventDefault(); /* because submitting a form refreshes the page */
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit.bind(thid, "Additional arg")}> /* you can pass additional arguments to event handlers */
+        <label>
+          Name:
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );}
+  }
+```
+
+Class functions are not bound by default.  
+`bind()` any function that is called without `()` after it, such as `onClick={this.handleClick}`.  
+
+### Composition vs Inheritance
+
+Use composition instead of inheritance for better code reuse.  
+
+Pass element's children through `props`.  
+
+```
+function SplitPane(props) {
+  return (
+    <div className="SplitPane">
+      <div className="SplitPane-left">{props.left}</div>
+      <div className="SplitPane-right">{props.right}</div>
+    </div>);
 }
-function NumberList(props) {
-  const numbers = props.numbers;
-  const listItems = numbers.map((number) =>
-    <ListItem key={number.toString()} value={number} />);
-  return <ul>{listItems}</ul>;
+
+function App() {
+  return <SplitPane left={<Contacts />} right={<Chat />} />;
 }
 ```
 
-### Keys Must Only Be Unique Among Siblings
-
-Keys needn't be globally unique.  
-
-### Embedding map() in JSX
+Make a more specific component render a more generic one and configure it with `props`.  
 
 ```
-function NumberList(props) {
-  const numbers = props.numbers;
-  return <ul>{numbers.map((number) => <ListItem key={number.toString()} value={number} />)}</ul>;
+function Dialog(props) {
+  return (
+    <FancyBorder color="blue">
+      <h1 className="Dialog-title">{props.title}</h1>
+      <p className="Dialog-message">{props.message}</p>
+    </FancyBorder>);
+}
+
+function WelcomeDialog() {
+  return <Dialog title="Welcome" message="Thank you for visiting our spacecraft!" />);
 }
 ```
+
+`props` and composition give you all the flexibility you need to customize a component.  
+
+To reuse non-UI functionality between components, extract it into a separate JavaScript module.  
