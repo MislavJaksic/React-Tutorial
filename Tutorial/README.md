@@ -12,7 +12,7 @@ You some have some familiarity with HTML and JavaScript:
 
 #### Setup Option 2: Local Development Environment
 
-1) Install [Node.js]()
+1) Install [Node.js](https://github.com/MislavJaksic/Knowledge-Repository/tree/master/Technology/Web/NodeJS)
 2) `npx create-react-app my-app`
 3) Delete and remake the src file
 4) Fill it in with files given by the tutorial

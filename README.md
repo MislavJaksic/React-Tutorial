@@ -1,11 +1,12 @@
-# React-Tutorial
+## React Tutorial
 
 ### Setup
 
-1) Install [Node.js]()
+1) Install [Node.js](https://github.com/MislavJaksic/Knowledge-Repository/tree/master/Technology/Web/NodeJS)
 2) `npx create-react-app App-Name`
-3) Run `npm start`
-4) Visit `http://localhost:3000`
+3) Go to React app directory
+4) Run `npm start`
+5) Visit `http://localhost:3000`
 
 Follow [link](https://babeljs.io/docs/en/editors/) for syntax highlighting.  
 
@@ -24,7 +25,7 @@ You just need to determine:
 
 Merging of HTML and JavaScript.  
 
-```
+```jsx
 const element = (
   <div>
     <h1 tabIndex="0">Hello!</h1>
@@ -40,7 +41,7 @@ return element;
 <div id="root"></div>
 ``` 
 
-```
+```jsx
 const element = <h1>Hello, world</h1>;
 ReactDOM.render(element, document.getElementById('root'));
 ```
@@ -55,7 +56,7 @@ Lifecycle methods/functions:
 * `componentDidMount()`: runs after the component output has been rendered to the DOM
 * `componentWillUnmount()`: runs when the components is removed from the DOM
 
-```
+```jsx
 componentDidMount() {
   this.timerID = setInterval(() => this.tick(), 1000);
 }
@@ -73,7 +74,7 @@ Always call `setState()`, never modify the `state` directly!
 
 `state` updates are asynchronous.  
 
-```
+```jsx
 this.setState((state, props) => ({counter: state.counter + props.increment})); /* Updates correctly! */
 
 this.setState({counter: this.state.counter + this.props.increment}); /* Updates incorrectly! */
@@ -94,7 +95,7 @@ Keys need to be unique only among siblings.
 `form`, `input`, `textarea` and `select` are special because they maintain their own state, seperate from React `state`.  
 These two states need to be combined.  
 
-```
+```jsx
 class NameForm extends React.Component {
   constructor(props) {
     super(props);
@@ -133,7 +134,7 @@ Use composition instead of inheritance for better code reuse.
 
 Pass element's children through `props`.  
 
-```
+```jsx
 function SplitPane(props) {
   return (
     <div className="SplitPane">
@@ -149,7 +150,7 @@ function App() {
 
 Make a more specific component render a more generic one and configure it with `props`.  
 
-```
+```jsx
 function Dialog(props) {
   return (
     <FancyBorder color="blue">
@@ -159,7 +160,7 @@ function Dialog(props) {
 }
 
 function WelcomeDialog() {
-  return <Dialog title="Welcome" message="Thank you for visiting our spacecraft!" />);
+  return <Dialog title="Welcome" message="Thank you for visiting our spacecraft!" />;
 }
 ```
 
