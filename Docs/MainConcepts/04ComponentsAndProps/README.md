@@ -7,7 +7,7 @@ Input is props and output is React elements.
 
 `Function Component` only has a `render()` function.  
 
-```
+```jsx
 class Welcome extends React.Component {
   render() {
     return <h1>Hello, {this.props.name}</h1>;
@@ -20,7 +20,7 @@ class Welcome extends React.Component {
 Create custom components.  
 Must always start with a capital letter.  
 
-```
+```jsx
 class Welcome extends React.Component {
   render() {return <h1>Hello, {this.props.name}</h1>;}
 }

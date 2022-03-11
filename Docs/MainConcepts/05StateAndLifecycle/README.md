@@ -13,7 +13,7 @@ If you have components defined as functions, don't. Convert them to a class.
 Class components should always call the base constructor with props.  
 `state` is special just like `props`.  
 
-```
+```jsx
 class Clock extends React.Component {
   constructor(props) {
     super(props);
@@ -33,7 +33,7 @@ Lifecycle methods/functions:
 * `componentDidMount()`: runs after the component output has been rendered to the DOM
 * `componentWillUnmount()`: runs when the components leaves the DOM
 
-```
+```jsx
 componentDidMount() {
   this.timerID = setInterval(() => this.tick(), 1000);
 }
@@ -51,7 +51,7 @@ Always call `setState()`, never modify the `state` directly!
 
 `state` updates are asynchronous.  
 
-```
+```jsx
 this.setState((state, props) => ({counter: state.counter + props.increment})); /* Updates correctly! */
 
 this.setState({counter: this.state.counter + this.props.increment}); /* Updates incorrectly! */

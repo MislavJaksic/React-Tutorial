@@ -9,13 +9,13 @@ Components are made of elements.
 
 ### Rendering an Element into the DOM
 
-```html
+```jsx
 <div id="root"></div>
 ```
 
 Everything inside the `root` DOM node will be managed by React DOM.  
 
-```
+```jsx
 const element = <h1>Hello, world</h1>;
 ReactDOM.render(element, document.getElementById('root'));
 ```

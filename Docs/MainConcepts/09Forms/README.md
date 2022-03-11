@@ -6,7 +6,7 @@ HTML form elements keep an internal state.
 
 An input form element whose value is controlled by React.
 
-```
+```jsx
 class NameForm extends React.Component {
   constructor(props) {
     super(props);

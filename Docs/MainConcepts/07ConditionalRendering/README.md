@@ -1,6 +1,6 @@
 ## Conditional Rendering
 
-```
+```jsx
 function Greeting(props) {
   const isLoggedIn = props.isLoggedIn;
   if (isLoggedIn) {
@@ -12,7 +12,7 @@ function Greeting(props) {
 
 ### Inline If with Logical && Operator
 
-```
+```jsx
 render() {
   const count = 0;
   return (
@@ -23,7 +23,7 @@ render() {
 
 ### Inline If-Else with Conditional Operator
 
-```
+```jsx
 render() {
   const isLoggedIn = this.state.isLoggedIn;
   return (

@@ -2,7 +2,7 @@
 
 Similar to handling events on DOM elements.  
 
-```
+```jsx
 function Form() {
   function handleSubmit(e) { /* e is a synthetic event */
     e.preventDefault();
@@ -18,6 +18,6 @@ Class functions are not bound by default.
 
 ### Passing Arguments to Event Handlers
 
-```
+```jsx
 <button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>
 ```

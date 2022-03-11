@@ -6,7 +6,7 @@ Use composition instead of inheritance for better code reuse.
 
 Pass element's children through `props`.  
 
-```
+```jsx
 function SplitPane(props) {
   return (
     <div className="SplitPane">
@@ -24,7 +24,7 @@ function App() {
 
 Make a more specific component render a more generic one and configure it with `props`.  
 
-```
+```jsx
 function Dialog(props) {
   return (
     <FancyBorder color="blue">

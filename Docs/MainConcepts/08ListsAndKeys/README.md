@@ -11,7 +11,7 @@ Don't use indexes for keys. Use logical identifiers instead.
 
 ### Extracting Components with Keys
 
-```
+```jsx
 function ListItem(props) {
   return <li>{props.value}</li>;
 }
@@ -29,7 +29,7 @@ Keys needn't be globally unique.
 
 ### Embedding map() in JSX
 
-```
+```jsx
 function NumberList(props) {
   const numbers = props.numbers;
   return <ul>{numbers.map((number) => <ListItem key={number.toString()} value={number} />)}</ul>;

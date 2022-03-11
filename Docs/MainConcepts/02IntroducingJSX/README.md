@@ -28,7 +28,7 @@ JSX can be used inside `if` statements and `for` loops, assign it to `variables`
 
 ### Specifying Children with JSX 
 
-```
+```jsx
 const element = (
   <div>
     <h1>Hello!</h1>
