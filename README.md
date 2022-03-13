@@ -167,3 +167,23 @@ function WelcomeDialog() {
 `props` and composition give you all the flexibility you need to customize a component.  
 
 To reuse non-UI functionality between components, extract it into a separate JavaScript module.  
+
+### Building and Deploying a React App
+
+Setup a GitHub Repository and GitHub Pages.  
+
+Add to `package.json`:
+```json
+... },
+"homepage": "GitHub-Pages-URL"
+"scripts": { // ...
+```
+
+```
+npm run build  // compile all the React code and create the build directory
+```
+
+Place everything from `build` into the `docs` directory in the GitHub repository.  
+Wait a few minutes for the GitHub Pages to refresh.  
+
+See [React Tutorial](ETaniaRascia/ReactTutorialTaniaRascia).  

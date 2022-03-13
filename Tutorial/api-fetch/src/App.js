@@ -22,7 +22,7 @@ class Button extends React.Component {
 
 class TableDataColumns extends React.Component {
   render() {
-    const rows = this.props.response.map((object) => <TableRow key={object.system_id} value={object}/>);
+    const rows = this.props.response.map((object) => <TableRow className={this.props.className} key={object.system_id} value={object}/>);
     return rows;
   }
 }
@@ -31,17 +31,17 @@ class TableRow extends React.Component {
   render() {
     return (
       <tr key={this.props.value.system_id}>
-        <TableColumnItem key={"system_id_" + this.props.value.system_id} value={this.props.value.system_id}/>
-        <TableColumnItem key={"npc_kills_" + this.props.value.system_id} value={this.props.value.npc_kills}/>
-        <TableColumnItem key={"pod_kills_" + this.props.value.system_id} value={this.props.value.pod_kills}/>
-        <TableColumnItem key={"ship_kills_" + this.props.value.system_id} value={this.props.value.ship_kills}/>
+        <TableColumnItem className={this.props.className} key={"system_id_" + this.props.value.system_id} value={this.props.value.system_id}/>
+        <TableColumnItem className={this.props.className} key={"npc_kills_" + this.props.value.system_id} value={this.props.value.npc_kills}/>
+        <TableColumnItem className={this.props.className} key={"pod_kills_" + this.props.value.system_id} value={this.props.value.pod_kills}/>
+        <TableColumnItem className={this.props.className} key={"ship_kills_" + this.props.value.system_id} value={this.props.value.ship_kills}/>
       </tr>);
   }
 }
 
 class TableColumnItem extends React.Component {
   render() {
-    return <td>{this.props.value}</td>;
+    return <td className={this.props.className}>{this.props.value}</td>;
   }
 }
 
@@ -106,13 +106,13 @@ class App extends React.Component {
         this.setState({response: jsonString})
       })
   }
-
+/*        <Label/>
+        <Input value={this.state.url} onChange={this.handleChange}/>
+        <Button onClick={this.handleClick}/>
+*/
   render() {
     return (
       <>
-        <Label/>
-        <Input value={this.state.url} onChange={this.handleChange}/>
-        <Button onClick={this.handleClick}/>
         <table>
           <tbody>
             <tr>
@@ -121,7 +121,7 @@ class App extends React.Component {
               <th>pod_kills</th>
               <th>ship_kills</th>
             </tr>
-            <TableDataColumns response={this.state.response}/>
+            <TableDataColumns className={"table-cell"} response={this.state.response}/>
           </tbody>
         </table>
       </>
