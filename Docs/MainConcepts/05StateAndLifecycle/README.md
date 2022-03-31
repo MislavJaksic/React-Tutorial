@@ -4,7 +4,7 @@ State is similar to props, but it is private and fully controlled by the compone
 
 ### Converting a Function to a Class
 
-If you have components defined as functions, don't. Convert them to a class.  
+If you have components defined as functions, don't. Convert them to a class... until you learn React Hooks, then use functions and Hooks instead.  
 
 `render()` will be called every time an update happens.  
 

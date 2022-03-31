@@ -1,132 +1,116 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 class Label extends React.Component {
   render() {
-    return <label>This is a label</label>;
+    return <label>{this.props.text}</label>;
   }
 }
 
 class Input extends React.Component {
   render() {
-    return <input type="text" value={this.props.value} onChange={this.props.onChange}/>;
+    return <input type="text" value={this.props.value} onChange={this.props.onChange} />;
   }
 }
 
-class Button extends React.Component {
-  render() {
-    return <input type="button" value="Click me!" onClick={this.props.onClick}/>;
-  }
+function Button(props) {
+  return (<input type={props.type} value={props.value} onClick={props.onClick} />);
 }
 
-class TableDataColumns extends React.Component {
-  render() {
-    const rows = this.props.response.map((object) => <TableRow className={this.props.className} key={object.system_id} value={object}/>);
-    return rows;
-  }
+function Table(props) {
+  return (
+    <>
+      <table>
+        <caption>{"Table timestamp: " + props.timestamp}<br />{"Expiry Date: " + props.expiryDate}</caption>
+        <tbody>
+          <tr>
+            <th>system_id</th>
+            <th>npc_kills</th>
+            <th>pod_kills</th>
+            <th>ship_kills</th>
+          </tr>
+          <TableDataColumns className={"table-cell"} response={props.data} />
+        </tbody>
+      </table>
+    </>
+  );
 }
 
-class TableRow extends React.Component {
-  render() {
-    return (
-      <tr key={this.props.value.system_id}>
-        <TableColumnItem className={this.props.className} key={"system_id_" + this.props.value.system_id} value={this.props.value.system_id}/>
-        <TableColumnItem className={this.props.className} key={"npc_kills_" + this.props.value.system_id} value={this.props.value.npc_kills}/>
-        <TableColumnItem className={this.props.className} key={"pod_kills_" + this.props.value.system_id} value={this.props.value.pod_kills}/>
-        <TableColumnItem className={this.props.className} key={"ship_kills_" + this.props.value.system_id} value={this.props.value.ship_kills}/>
-      </tr>);
-  }
+function TableDataColumns(props) {
+  const rows = props.response.map((object) => <TableRow className={props.className} key={object.system_id} value={object} />);
+  return rows;
 }
 
-class TableColumnItem extends React.Component {
-  render() {
-    return <td className={this.props.className}>{this.props.value}</td>;
-  }
+function TableRow(props) {
+  return (
+    <tr key={props.value.system_id}>
+      <TableColumnItem className={props.className} key={"system_id_" + props.value.system_id} value={props.value.system_id} />
+      <TableColumnItem className={props.className} key={"npc_kills_" + props.value.system_id} value={props.value.npc_kills} />
+      <TableColumnItem className={props.className} key={"pod_kills_" + props.value.system_id} value={props.value.pod_kills} />
+      <TableColumnItem className={props.className} key={"ship_kills_" + props.value.system_id} value={props.value.ship_kills} />
+    </tr>);
 }
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      url: "Type your API URL",
-      response: [{"system_id": 0, "npc_kills": 0, "pod_kills": 0, "ship_kills": 0}],
-    }
+function TableColumnItem(props) {
+  return <td className={props.className}>{props.value}</td>;
+}
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-  }
+const useEsiApi = () => {
+  const [fetchTimestamp, setFetchTimestamp] = useState("Never");
+  const [expiryDate, setExpiryDate] = useState("Never");
+  const [systems, setSystems] = useState([0]);
+  const [systemKills, setSystemKills] = useState([{ "system_id": 0, "npc_kills": 0, "pod_kills": 0, "ship_kills": 0 }]);
+  const [allSystemKills, setAllSystemKills] = useState([{ "system_id": 0, "npc_kills": 0, "pod_kills": 0, "ship_kills": 0 }]);
 
-  async componentDidMount() {
-    const allSystemKills = await this.fetchAllSystemKills()
-    this.setState({response: allSystemKills})
-  }
-
-  async fetchAllSystemKills() {
-    let mapSystemKills = await this.fetchSystemKillsMap()
-    let systems = await this.fetchUrl("https://esi.evetech.net/latest/universe/systems/?datasource=tranquility")
-
-    let allSystemKills = []
-    for (let system of systems) {
-      if (mapSystemKills.has(system)) {
-        allSystemKills.push({"system_id": system, "npc_kills": mapSystemKills.get(system).npc_kills, "pod_kills": mapSystemKills.get(system).pod_kills, "ship_kills": mapSystemKills.get(system).ship_kills})
-      } else {
-        allSystemKills.push({"system_id": system, "npc_kills": 0, "pod_kills": 0, "ship_kills": 0})
-      }
-    }
-
-    return allSystemKills
-  }
-
-  async fetchSystemKillsMap() {
-    let systemKills = await this.fetchUrl("https://esi.evetech.net/latest/universe/system_kills/?datasource=tranquility")
-    
-    let mapSystemKills = new Map()
+  useEffect(() => {
+    const fetchSystems = async () => {
+      const response = await fetch("https://esi.evetech.net/latest/universe/systems/?datasource=tranquility");
+      const json = await response.json();
+      setSystems(json);
+      console.log(`Systems fetched for the ${fetchTimestamp} time`);
+    };
+    fetchSystems();
+  }, []);
+  useEffect(() => {
+    const fetchSystemKills = async () => {
+      const response = await fetch("https://esi.evetech.net/latest/universe/system_kills/?datasource=tranquility");
+      const json = await response.json();
+      setSystemKills(json);
+      setExpiryDate(response.headers.get("expires"));
+      console.log(`System kills fetched for the ${fetchTimestamp} time`);
+    };
+    fetchSystemKills();
+  }, [fetchTimestamp]);
+  useEffect(() => {
+    let mapSystemKills = new Map();
     for (let systemKill of systemKills) {
       mapSystemKills.set(systemKill["system_id"], systemKill)
-    }
+    };
+    let allSystemKills = [];
+    for (let system of systems) {
+      if (mapSystemKills.has(system)) {
+        allSystemKills.push({ "system_id": system, "npc_kills": mapSystemKills.get(system).npc_kills, "pod_kills": mapSystemKills.get(system).pod_kills, "ship_kills": mapSystemKills.get(system).ship_kills });
+      } else {
+        allSystemKills.push({ "system_id": system, "npc_kills": 0, "pod_kills": 0, "ship_kills": 0 });
+      }
+    };
+    setAllSystemKills(allSystemKills);
+    console.log(`All system kills fetched for the ${fetchTimestamp} time`);
+  }, [fetchTimestamp]);
 
-    return mapSystemKills
-  }
+  return [{ expiryDate, fetchTimestamp, allSystemKills }, setFetchTimestamp]
+}
 
-  async fetchUrl(url) {
-    const response = await fetch(url)
-    return await response.json()
-  }
+function App() {
+  const [{ expiryDate, fetchTimestamp, allSystemKills }, setFetchTimestamp] = useEsiApi();
 
-  handleChange(event) {
-    this.setState({url: event.target.value});
-  }
-
-  handleClick(event) {
-      fetch("https://esi.evetech.net/latest/universe/systems/?datasource=tranquility")
-      .then((response) => response.json())
-      .then((systemArray) => {
-        let jsonString = JSON.stringify(systemArray)
-        this.setState({response: jsonString})
-      })
-  }
-/*        <Label/>
-        <Input value={this.state.url} onChange={this.handleChange}/>
-        <Button onClick={this.handleClick}/>
-*/
-  render() {
-    return (
-      <>
-        <table>
-          <tbody>
-            <tr>
-              <th>system_id</th>
-              <th>npc_kills</th>
-              <th>pod_kills</th>
-              <th>ship_kills</th>
-            </tr>
-            <TableDataColumns className={"table-cell"} response={this.state.response}/>
-          </tbody>
-        </table>
-      </>
+  return (
+    <>
+      <Button type="button" value="Refresh data" onClick={() => setFetchTimestamp(new Date().toString())} />
+      <Table timestamp={fetchTimestamp} expiryDate={expiryDate} data={allSystemKills} />)
+    </>
   );
-  }
 }
 
 export default App;
