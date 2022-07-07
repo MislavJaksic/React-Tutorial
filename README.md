@@ -2,11 +2,12 @@
 
 ### Setup
 
-1) Install [Node.js](https://github.com/MislavJaksic/Knowledge-Repository/tree/master/Technology/Web/NodeJS)
+1) Install Node.js
 2) `npx create-react-app App-Name`
-3) Go to React app directory
-4) Run `npm start`
-5) Visit `http://localhost:3000`
+3) `cd App-Name`
+4) Run `npm install`
+5) Run `npm start`
+6) Visit `http://localhost:3000`
 
 Follow [link](https://babeljs.io/docs/en/editors/) for syntax highlighting.  
 
@@ -23,26 +24,30 @@ You just need to determine:
 
 ### Syntax
 
+Use `function` rather than `class` when creating React components.  
+
 See [Main Concepts](Docs/MainConcepts).  
 See [Hooks](Docs/Hooks).  
 
-### Building and Deploying a React App
+### [Create React App](https://create-react-app.dev/)  
 
-Setup a GitHub Repository and GitHub Pages.  
+#### [Getting Started](https://create-react-app.dev/docs/getting-started)
 
-Add to `package.json`:
-```json
-... },
-"homepage": "GitHub-Pages-URL"
-"scripts": { // ...
+1) Install Node.js
+2) `npx create-react-app App-Name --template typescript`
+3) `cd App-Name`
+4) Run `npm start`
+5) Visit `http://localhost:3000`
+
+#### Development
+
+```
+$: .\node_modules\.bin\eslint --init
+$: .\node_modules\.bin\eslint . [--fix]
 ```
 
-```
-npm run build  // compile all the React code and create the build directory
-```
+[Editor Setup](https://create-react-app.dev/docs/setting-up-your-editor)  
 
-Place everything from `build` into the `docs` directory in the GitHub repository.  
-Wait a few minutes for the GitHub Pages to refresh.  
+#### Deployment
 
-See [React Tutorial](ETaniaRascia/ReactTutorialTaniaRascia).  
-
+[Deployment](https://create-react-app.dev/docs/deployment)  

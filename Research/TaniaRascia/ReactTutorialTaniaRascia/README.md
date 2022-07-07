@@ -35,10 +35,10 @@ Add to the `scripts` property:
 
 Add `gh-pages` to the `devDependencies`:
 ```
-npm install --save-dev gh-pages
+$: npm install --save-dev gh-pages
 ```
 
 ```
-npm run build  // compile all the React code and create the build directory
-npm run deploy
+$: npm run build  // compile all the React code and create the build directory
+$: npm run deploy
 ```
