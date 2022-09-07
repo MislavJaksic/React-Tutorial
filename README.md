@@ -24,30 +24,37 @@ You just need to determine:
 
 ### Syntax
 
-Use `function` rather than `class` when creating React components.  
+Use `function` rather than `class` when creating React components, so you can use Hooks.  
 
 See [Main Concepts](Docs/MainConcepts).  
 See [Hooks](Docs/Hooks).  
 
-### [Create React App](https://create-react-app.dev/)  
+## Toolchains
+
+### [Create React App](https://create-react-app.dev/)
 
 #### [Getting Started](https://create-react-app.dev/docs/getting-started)
 
 1) Install Node.js
 2) `npx create-react-app App-Name --template typescript`
 3) `cd App-Name`
-4) Run `npm start`
-5) Visit `http://localhost:3000`
+4) Run `npm install`
+5) Run `npm start`
+6) Visit `http://localhost:3000`
 
 #### Development
 
+##### [Formatting Code Automatically](https://create-react-app.dev/docs/setting-up-your-editor#formatting-code-automatically)
+
 ```
-$: .\node_modules\.bin\eslint --init
-$: .\node_modules\.bin\eslint . [--fix]
+$: npm install --save husky lint-staged prettier
+$: ./node_modules/.bin/prettier --write "src/**/*.{js,jsx,ts,tsx,css,scss,md}"
 ```
+... and install [Prettier for your editor](https://prettier.io/docs/en/editors.html).
 
-[Editor Setup](https://create-react-app.dev/docs/setting-up-your-editor)  
+#### [Deployment](https://create-react-app.dev/docs/deployment)
 
-#### Deployment
+If you deploy to GitHub Pages with `gh-pages` library's command `npm run deploy` and get `fatal: A branch named 'gh-pages' already exists.`:
+* manually remove the folder `node_modules/.cache/gh-pages`.
 
-[Deployment](https://create-react-app.dev/docs/deployment)  
+GitHub Pages won't refresh data after rendering it. You have to refresh data manually using a button.  
