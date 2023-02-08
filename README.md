@@ -22,6 +22,14 @@ You just need to determine:
 * `props`: passed between components
 * `state`: managed within the component; variable within a function
 
+#### State
+
+Should be owned by the closest common ancestor of the components that need it.  
+
+#### Event Handler
+
+(Anonymous) function that should be owned by the component whose state it uses.  
+
 ### Syntax
 
 Use `function` rather than `class` when creating React components, so you can use Hooks.  
